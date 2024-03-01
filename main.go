@@ -1,8 +1,10 @@
 package main
 
 import (
+	"math/rand"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid"
@@ -16,6 +18,7 @@ func main() {
 		v1.GET("/thingy", getThingies)
 		v1.GET("/thingy/:id", getThingyById)
 		v1.PUT("/thingy", putThingy)
+		v1.POST("/thingy/:name", newThingy)
 		v1.DELETE("/thingy/:id", deleteThingy)
 	}
 	r.Run()
@@ -55,6 +58,26 @@ func getThingyById(c *gin.Context) {
 		}
 	}
 	c.JSON(http.StatusNotFound, gin.H{"data": nil, "error": "thingy not found"})
+}
+
+func newThingy(c *gin.Context) {
+	name := c.Param("name")
+	if name == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid thingy", "data": nil})
+		return
+	}
+
+	unixTime := time.Now()
+	entropy := ulid.Monotonic(rand.New(rand.NewSource(unixTime.UnixNano())), 0)
+	id, err := ulid.New(ulid.Timestamp(unixTime), entropy)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "error processing thingy", "data": nil})
+		return
+	}
+
+	t := Thingy{Id: id, Name: name}
+	thingiesDB = append(thingiesDB, t)
+	c.JSON(http.StatusAccepted, gin.H{"err": nil, "data": t})
 }
 
 func putThingy(c *gin.Context) {
