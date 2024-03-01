@@ -13,12 +13,33 @@ func main() {
 	v1 := r.Group("/api/v1")
 	{
 		v1.GET("/thingy", getThingies)
+		v1.GET("/thingy/:id", getThingyById)
 	}
 	r.Run()
 }
 
 func getThingies(c *gin.Context) {
 	c.JSON(http.StatusOK, thingiesDB)
+}
+
+func getThingyById(c *gin.Context) {
+	tId := c.Param("id")
+	if tId == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing thingy id", "data": nil})
+		return
+	}
+	tUlid, err := ulid.Parse(tId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid thingy id", "data": nil})
+		return
+	}
+	for _, t := range thingiesDB {
+		if tUlid == t.Id {
+			c.JSON(http.StatusOK, gin.H{"data": t, "error": nil})
+			return
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{"data": ""})
 }
 
 type Thingy struct {
