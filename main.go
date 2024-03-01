@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid"
@@ -21,7 +22,19 @@ func main() {
 }
 
 func getThingies(c *gin.Context) {
-	c.JSON(http.StatusOK, thingiesDB)
+	queryOffset := c.DefaultQuery("offset", "0")
+	offset, err := strconv.Atoi(queryOffset)
+	if err != nil {
+		offset = 0
+	}
+	if offset < 0 || offset >= len(thingiesDB) {
+		offset = 0
+	}
+	if offset+thingiesPerPage > len(thingiesDB) {
+		c.JSON(http.StatusOK, thingiesDB[offset:])
+	}
+
+	c.JSON(http.StatusOK, thingiesDB[offset:offset+thingiesPerPage])
 }
 
 func getThingyById(c *gin.Context) {
@@ -90,7 +103,39 @@ type Thingy struct {
 	Name string
 }
 
+const thingiesPerPage int = 10
+
 var thingiesDB = []Thingy{
-	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "someThingy"},
-	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "otherThingy"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-1"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-2"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-3"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-4"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-5"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-6"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-7"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-8"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-9"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-10"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-11"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-12"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-13"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-14"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-15"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-16"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-17"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-18"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-19"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-20"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-21"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-22"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-23"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-24"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-25"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-26"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-27"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-28"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-29"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-30"},
+	{Id: ulid.MustParse("01HQXNGNKG5XZ5WCGAC2D318BQ"), Name: "Thingy-31"},
+	{Id: ulid.MustParse("01HQXNJ69R615NEH3ZVWN522M9"), Name: "Thingy-32"},
 }
