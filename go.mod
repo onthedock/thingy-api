@@ -2,7 +2,10 @@ module github.com/onthedock/thingy-api
 
 go 1.20
 
-require github.com/gin-gonic/gin v1.9.1
+require (
+	github.com/gin-gonic/gin v1.9.1
+	github.com/oklog/ulid v1.3.1
+)
 
 require (
 	github.com/bytedance/sonic v1.9.1 // indirect
