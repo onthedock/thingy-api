@@ -41,7 +41,7 @@ func getThingyById(c *gin.Context) {
 			return
 		}
 	}
-	c.JSON(http.StatusOK, gin.H{"data": ""})
+	c.JSON(http.StatusNotFound, gin.H{"data": nil, "error": "thingy not found"})
 }
 
 func putThingy(c *gin.Context) {
