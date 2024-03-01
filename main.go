@@ -15,6 +15,7 @@ func main() {
 		v1.GET("/thingy", getThingies)
 		v1.GET("/thingy/:id", getThingyById)
 		v1.PUT("/thingy", putThingy)
+		v1.DELETE("/thingy/:id", deleteThingy)
 	}
 	r.Run()
 }
@@ -60,6 +61,28 @@ func putThingy(c *gin.Context) {
 func addThingyToDB(t *Thingy) (string, error) {
 	thingiesDB = append(thingiesDB, Thingy{Id: t.Id, Name: t.Name})
 	return t.Id.String(), nil
+}
+
+func deleteThingy(c *gin.Context) {
+	tId := c.Param("id")
+	if tId == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing thingy id", "data": nil})
+		return
+	}
+	tUlid, err := ulid.Parse(tId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid thingy id", "data": nil})
+		return
+	}
+	for i, t := range thingiesDB {
+		if tUlid == t.Id {
+			thingiesDB[i] = thingiesDB[len(thingiesDB)-1]
+			thingiesDB = thingiesDB[:len(thingiesDB)-1]
+			c.JSON(http.StatusAccepted, gin.H{"data": t.Id, "error": nil})
+			return
+		}
+	}
+	c.JSON(http.StatusGone, gin.H{"data": nil, "err": "thingy not found"})
 }
 
 type Thingy struct {
