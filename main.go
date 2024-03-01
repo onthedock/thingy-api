@@ -14,6 +14,7 @@ func main() {
 	{
 		v1.GET("/thingy", getThingies)
 		v1.GET("/thingy/:id", getThingyById)
+		v1.PUT("/thingy", putThingy)
 	}
 	r.Run()
 }
@@ -40,6 +41,25 @@ func getThingyById(c *gin.Context) {
 		}
 	}
 	c.JSON(http.StatusOK, gin.H{"data": ""})
+}
+
+func putThingy(c *gin.Context) {
+	var t Thingy
+	if err := c.ShouldBindJSON(&t); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"err": "invalid thingy", "data": nil})
+		return
+	}
+	tId, err := addThingyToDB(&t)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"data": nil, "err": "error processing thingy"})
+		return
+	}
+	c.JSON(http.StatusAccepted, gin.H{"data": tId, "err": nil})
+}
+
+func addThingyToDB(t *Thingy) (string, error) {
+	thingiesDB = append(thingiesDB, Thingy{Id: t.Id, Name: t.Name})
+	return t.Id.String(), nil
 }
 
 type Thingy struct {
