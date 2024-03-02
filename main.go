@@ -62,11 +62,6 @@ func getThingyById(c *gin.Context) {
 
 func newThingy(c *gin.Context) {
 	name := c.Param("name")
-	if name == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid thingy", "data": nil})
-		return
-	}
-
 	t := Thingy{Id: ulid.Make(), Name: name}
 	thingiesDB = append(thingiesDB, t)
 	c.JSON(http.StatusAccepted, gin.H{"err": nil, "data": t})
