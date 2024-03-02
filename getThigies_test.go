@@ -8,17 +8,30 @@ import (
 
 func Test_getThingies(t *testing.T) {
 	r := setupRouter()
+	type testCase struct {
+		method      string
+		uri         string
+		wantedCode  int
+		wantedError error
+	}
+
+	testCases := []testCase{
+		{method: "GET", uri: "/api/v1/thingy", wantedCode: http.StatusOK, wantedError: nil},
+	}
 
 	w := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", "/api/v1/thingy", nil)
-	if err != nil {
-		t.Fatalf("unable to create request: %s", err.Error())
-		return
-	}
-	r.ServeHTTP(w, req)
 
-	if w.Code != http.StatusOK {
-		t.Fatalf("wanted status code %d but got %d", http.StatusOK, w.Code)
-		return
+	for _, tc := range testCases {
+		req, err := http.NewRequest(tc.method, tc.uri, nil)
+		if err != tc.wantedError {
+			t.Fatalf("wanted error %v but got %v", tc.wantedError, err)
+			return
+		}
+		r.ServeHTTP(w, req)
+
+		if w.Code != tc.wantedCode {
+			t.Fatalf("wanted status code %d but got %d", tc.wantedCode, w.Code)
+			return
+		}
 	}
 }
