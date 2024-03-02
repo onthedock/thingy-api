@@ -16,9 +16,10 @@ func Test_getThingyById(t *testing.T) {
 		wantedCode  int
 		wantedError error
 	}{
-		"happy path":       {uri: fmt.Sprintf("/api/v1/thingy/id/%s", thingiesDB[0].Id.String()), wantedCode: http.StatusOK, wantedError: nil},
-		"invalid thingy":   {uri: "/api/v1/thingy/id/123", wantedCode: http.StatusBadRequest, wantedError: nil},
-		"thingy not found": {uri: "/api/v1/thingy/id/01HR0361PRQFAHBEVK2AT43GYQ", wantedCode: http.StatusNotFound, wantedError: nil},
+		"happy path":        {uri: fmt.Sprintf("/api/v1/thingy/id/%s", thingiesDB[0].Id.String()), wantedCode: http.StatusOK, wantedError: nil},
+		"invalid thingy":    {uri: "/api/v1/thingy/id/123", wantedCode: http.StatusBadRequest, wantedError: nil},
+		"thingy not found":  {uri: "/api/v1/thingy/id/01HR0361PRQFAHBEVK2AT43GYQ", wantedCode: http.StatusNotFound, wantedError: nil},
+		"missing thingy id": {uri: "/api/v1/thingy/id/", wantedCode: http.StatusNotFound, wantedError: nil},
 	}
 
 	for name, tc := range testCases {

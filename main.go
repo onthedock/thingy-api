@@ -46,10 +46,6 @@ func getThingies(c *gin.Context) {
 
 func getThingyById(c *gin.Context) {
 	tId := c.Param("id")
-	if tId == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "missing thingy id", "data": nil})
-		return
-	}
 	tUlid, err := ulid.Parse(tId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid thingy id", "data": nil})
