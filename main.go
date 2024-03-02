@@ -18,7 +18,7 @@ func main() {
 		v1.GET("/thingy", getThingies)
 		v1.GET("/thingy/:id", getThingyById)
 		v1.PUT("/thingy", putThingy)
-		v1.POST("/thingy/:name", newThingy)
+		v1.POST("/thingy/name/:name", newThingy)
 		v1.DELETE("/thingy/:id", deleteThingy)
 	}
 	r.Run()
