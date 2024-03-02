@@ -16,7 +16,11 @@ func Test_getThingies(t *testing.T) {
 		wantedCode  int
 		wantedError error
 	}{
-		"get thingy": {method: "GET", uri: "/api/v1/thingy", wantedCode: http.StatusOK, wantedError: nil},
+		"happy path":      {method: "GET", uri: "/api/v1/thingy", wantedCode: http.StatusOK, wantedError: nil},
+		"negative offset": {method: "GET", uri: "/api/v1/thingy?offset=-3", wantedCode: http.StatusOK, wantedError: nil},
+		"offset bigger that length of items in db":             {method: "GET", uri: "/api/v1/thingy?offset=3000", wantedCode: http.StatusOK, wantedError: nil},
+		"offset + thigiesPerPage exceed length of items in db": {method: "GET", uri: "/api/v1/thingy?offset=30", wantedCode: http.StatusOK, wantedError: nil},
+		"invalid offset (not a number)":                        {method: "GET", uri: "/api/v1/thingy?offset=patata", wantedCode: http.StatusOK, wantedError: nil},
 	}
 
 	w := httptest.NewRecorder()

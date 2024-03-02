@@ -38,6 +38,7 @@ func getThingies(c *gin.Context) {
 	}
 	if offset+thingiesPerPage > len(thingiesDB) {
 		c.JSON(http.StatusOK, thingiesDB[offset:])
+		return
 	}
 
 	c.JSON(http.StatusOK, thingiesDB[offset:offset+thingiesPerPage])
