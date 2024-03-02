@@ -10,8 +10,7 @@ import (
 	"github.com/oklog/ulid"
 )
 
-func main() {
-
+func setupRouter() *gin.Engine {
 	r := gin.Default()
 	v1 := r.Group("/api/v1")
 	{
@@ -21,6 +20,11 @@ func main() {
 		v1.POST("/thingy/name/:name", newThingy)
 		v1.DELETE("/thingy/:id", deleteThingy)
 	}
+	return r
+}
+
+func main() {
+	r := setupRouter()
 	r.Run()
 }
 
