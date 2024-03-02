@@ -1,13 +1,12 @@
 package main
 
 import (
-	"math/rand"
+	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/oklog/ulid"
+	"github.com/oklog/ulid/v2"
 )
 
 func setupRouter() *gin.Engine {
@@ -71,15 +70,7 @@ func newThingy(c *gin.Context) {
 		return
 	}
 
-	unixTime := time.Now()
-	entropy := ulid.Monotonic(rand.New(rand.NewSource(unixTime.UnixNano())), 0)
-	id, err := ulid.New(ulid.Timestamp(unixTime), entropy)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "error processing thingy", "data": nil})
-		return
-	}
-
-	t := Thingy{Id: id, Name: name}
+	t := Thingy{Id: ulid.Make(), Name: name}
 	thingiesDB = append(thingiesDB, t)
 	c.JSON(http.StatusAccepted, gin.H{"err": nil, "data": t})
 }
