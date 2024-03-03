@@ -109,8 +109,8 @@ func deleteThingy(c *gin.Context) {
 }
 
 type Thingy struct {
-	Id   ulid.ULID
-	Name string
+	Id   ulid.ULID `json:"id" binding:"required"`
+	Name string    `json:"name" binding:"required"`
 }
 
 const thingiesPerPage int = 10
