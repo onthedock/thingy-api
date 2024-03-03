@@ -1,5 +1,5 @@
 {
-    "image": "mcr.microsoft.com/devcontainers/go:1.21-bookworm",
+    "image": "mcr.microsoft.com/devcontainers/go:1.22-bookworm",
     "runArgs": [
       "--platform=linux/amd64",
       "--network=host"
