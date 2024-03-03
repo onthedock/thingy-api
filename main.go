@@ -87,12 +87,7 @@ func addThingyToDB(t *Thingy) (string, error) {
 }
 
 func deleteThingy(c *gin.Context) {
-	tId := c.Param("id")
-	if tId == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "missing thingy id", "data": nil})
-		return
-	}
-	tUlid, err := ulid.Parse(tId)
+	tUlid, err := ulid.Parse(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid thingy id", "data": nil})
 		return
