@@ -21,3 +21,44 @@ $ terraform version
 Terraform v1.7.4
 on linux_amd64
 ```
+
+## Thingy API Server
+
+When run, by default, the Thingy API Server adds 34 `Thingy` items to the in-memory struct used as a database.
+
+### Retrieve a list of `Thingy` from the DB (`GET`)
+
+The results only displays `thingiesPerPage` results (10 by default), starting at the first element in the DB
+
+```console
+$ curl -s localhost:8080/api/v1/thingy
+    "id": "01HS33PEN2AFGQ3G0BH7920HGJ",
+    "name": "Thingy-0"
+  },
+  {
+    "id": "01HS33PEN3X4SKWGEJ1JQR0HCY",
+    "name": "Thingy-1"
+  },
+  ...
+```
+
+A user may provide the *offset* parameter to specify which is the first element retrieved from the DB:
+
+```console
+$ curl -s localhost:8080/api/v1/thingy?offset=20
+[
+  {
+    "id": "01HS33PEN3X4SKWGEJ2PZ8XRNK",
+    "name": "Thingy-20"
+  },
+  {
+    "id": "01HS33PEN3X4SKWGEJ2R6KJ0N2",
+    "name": "Thingy-21"
+  },
+  {
+    "id": "01HS33PEN3X4SKWGEJ2VJBGC14",
+    "name": "Thingy-22"
+  },
+  ...
+```
+
