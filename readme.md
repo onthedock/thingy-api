@@ -77,3 +77,17 @@ $ curl localhost:8080/api/v1/thingy/id/01HSVGEMYMHNYQEW2TMXM44M90
 }
 ```
 
+### Add a new `Thingy`
+
+Using the `POST` method, we provide a `name` for the `Thingy` and the API will generate an ULID for it automatically:
+
+```console
+$ curl -X POST localhost:8080/api/v1/thingy/name/new-thingy-name
+{
+  "data":{
+    "id":"01HSVHKYW5K88N10E3T4CENASX",
+    "name":"new-thingy-name"
+  },
+  "err":null
+}
+```
