@@ -62,3 +62,18 @@ $ curl -s localhost:8080/api/v1/thingy?offset=20
   ...
 ```
 
+### Get a specifc `Thingy`
+
+At some point I decided to standarize the JSON returned by the API in two main fields: `data` and `error`... But it seems that, for some reason, I did not implemented it for returning a *list* of *Thingies*...
+
+```console
+$ curl localhost:8080/api/v1/thingy/id/01HSVGEMYMHNYQEW2TMXM44M90
+{
+  "data": {
+    "id": "01HSVGEMYMHNYQEW2TMXM44M90",
+    "name": "Thingy-6"
+  },
+  "error": null
+}
+```
+
