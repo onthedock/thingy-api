@@ -91,3 +91,30 @@ $ curl -X POST localhost:8080/api/v1/thingy/name/new-thingy-name
   "err":null
 }
 ```
+
+### Create a new `Thingy` providing all the fields
+
+We may be interested in adding a `Thingy` with a particular value for its `Id`, instead of relying on an automatically generated one.
+
+For that, we can use the `PUT` method:
+
+```console
+$ curl -X PUT -d '{"Id": "01HSVHVTTVEHT0Y6GMCX1MF3XE", "name": "my-thingy"}' http://localhost:8080/api/v1/thingy | jq
+{
+  "data": "01HSVHVTTVEHT0Y6GMCX1MF3XE",
+  "err": null
+}
+```
+
+We can validate that it has been created retrieving it using:
+
+```console
+$ curl -s -X GET http://localhost:8080/api/v1/thingy/id/01HSVHVTTVEHT0Y6GMCX1MF3XE
+{
+  "data": {
+    "id": "01HSVHVTTVEHT0Y6GMCX1MF3XE",
+    "name": "my-thingy"
+  },
+  "error": null
+}
+```
