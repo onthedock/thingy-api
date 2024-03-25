@@ -106,6 +106,8 @@ $ curl -X PUT -d '{"Id": "01HSVHVTTVEHT0Y6GMCX1MF3XE", "name": "my-thingy"}' htt
 }
 ```
 
+As we are providing the full specification of a `Thingy`, including its `Id`, the `PUT` operation is idempotent; we may overwrite the `Thingy` in the DB as many times as we want.
+
 We can validate that it has been created retrieving it using:
 
 ```console
