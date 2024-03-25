@@ -118,3 +118,25 @@ $ curl -s -X GET http://localhost:8080/api/v1/thingy/id/01HSVHVTTVEHT0Y6GMCX1MF3
   "error": null
 }
 ```
+
+### Remove a `Thingy` from the DB
+
+To remove a `Thingy`, we specify its `Id`:
+
+```console
+ $ curl -X DELETE http://localhost:8080/api/v1/thingy/id/01HSVHVTTVEHT0Y6GMCX1MF3XE
+{
+  "data":"01HSVHVTTVEHT0Y6GMCX1MF3XE",
+  "error":null
+}
+```
+
+If we try to delete a non-existing `Thingy`, we get a *Not Found* error:
+
+```console
+$ curl -X DELETE http://localhost:8080/api/v1/thingy/id/01HSVHVTTVEHT0Y6GMCX1MF3XE | jq
+{
+  "data": null,
+  "err": "thingy not found"
+}
+```
